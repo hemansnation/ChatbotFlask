@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <title>Home</title>
+  <head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	 <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	</head>
+    <style>
+      
+    </style>
+  
+  </style>
+  <body>
+  
+     <center>
+      <h1>
+        CM Help Line
+      </h1>
+    </center>
+<div class="box"></div>
+    <div class="boxed">
+      <div>
+        <div id="chatbox">
+          
+          <p class="botText">
+            <span>Hi! I'm Chief Minister ChatBot</span>
+          </p>
+        </div>
+        <div id="userInput">
+        <input id="textInput" type="text" name="msg" placeholder="Message">
+        <input id="buttonInput" type="submit" value="Send">
+      </div>
+	  <script>
+	  function getBotResponse() {
+          var rawText = $("#textInput").val();
+		  console.log(rawText)
+          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
+		  console.log(userHtml)
+          /*$.get("/get", { 
+			msg: rawText 
+			}).done(function(data) {
+		  console.log(data)
+		  console.log(rawText)
+            var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+            $("#chatbox").append(botHtml);
+            document.getElementById("userInput").scrollIntoView({ block: "start", behavior: "smooth" });
+            console.log(botHtml)
+		  });
+		var movies = {
+			msg: rawText,
+		}*/
+		$.ajax({
+			url: 'http://127.0.0.1:5000/get',
+			type: 'GET',
+			contentType: "application/x-www-form-urlencoded;charset=utf8",
+			data: {'name':rawText},
+			success: function(response){
+					console.log(response)
+			}		//JSON.stringify(movies),   // converts js value to JSON string
+		});
+		//.done(function(result){     // on success get the return object from server
+			//console.log(result)     // do whatever with it. In this case see it in console
+			//})
+        }
+        $("#textInput").keypress(function(e) {
+            if(e.which == 13) {
+                getBotResponse();
+            }
+        });
+        $("#buttonInput").click(function() {
+          getBotResponse();
+        });
+		</script>
+      </div>
+    </div>
+	
+  </body>
+</html>
